@@ -11,6 +11,18 @@ module.exports = {
       env: {
         NODE_ENV: "production"
       }
+    },
+    {
+      name: "k-skill-telegram-bot",
+      cwd: __dirname,
+      script: "./scripts/run-telegram-bot.sh",
+      interpreter: "/bin/bash",
+      exec_mode: "fork",
+      autorestart: true,
+      watch: false,
+      env: {
+        NODE_ENV: "production"
+      }
     }
   ]
 };

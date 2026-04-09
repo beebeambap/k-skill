@@ -1,0 +1,34 @@
+name: Telegram Bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/telegram-bot/**'
+  workflow_dispatch:
+  schedule:
+    # 6시간마다 자동 재시작 (GitHub Actions 최대 실행시간 대응)
+    - cron: '0 */6 * * *'
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350  # ~5시간 50분 (6시간 한도 전 종료)
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --workspace=packages/telegram-bot
+
+      - name: Run Telegram Bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          KSKILL_PROXY_BASE_URL: ${{ secrets.KSKILL_PROXY_BASE_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          timeout 20400 node packages/telegram-bot/src/bot.js || true
+          # 20400초 = 5시간 40분, 이후 cron이 새 워크플로우 시작

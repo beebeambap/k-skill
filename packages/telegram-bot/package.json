@@ -1,0 +1,18 @@
+{
+  "name": "k-skill-telegram-bot",
+  "version": "0.1.0",
+  "description": "k-skill 저장소의 스킬을 활용하여 정보를 제공하는 텔레그램 비서 봇",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "test": "node --test test/bot.test.js"
+  },
+  "dependencies": {
+    "telegraf": "^4.16.3"
+  }
+}
