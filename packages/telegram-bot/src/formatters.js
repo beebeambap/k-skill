@@ -18,6 +18,10 @@ const CATEGORY_LABELS = {
   other: "기타",
 };
 
+function escapeHtml(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 export function gradeLabel(grade) {
   return GRADE_EMOJI[Number(grade)] || grade || "N/A";
 }
@@ -32,31 +36,31 @@ export function formatSkillList(groups) {
   for (const [category, skills] of [...groups.entries()].sort()) {
     lines.push(`<b>[${categoryLabel(category)}]</b>`);
     for (const skill of skills) {
-      lines.push(`  /skill_${skill.name.replaceAll("-", "_")} - ${skill.description.slice(0, 60)}`);
+      lines.push(`  /skill_${skill.name.replaceAll("-", "_")} - ${escapeHtml(skill.description.slice(0, 60))}`);
     }
     lines.push("");
   }
 
-  lines.push("궁금한 거 있으면 /skill_<이름> 으로 자세히 볼 수 있어!");
+  lines.push("궁금한 거 있으면 /skill_&lt;이름&gt; 으로 자세히 볼 수 있어!");
   return lines.join("\n");
 }
 
 export function formatSkillDetail(skill) {
   const lines = [
-    `<b>🔧 ${skill.name}</b>`,
+    `<b>🔧 ${escapeHtml(skill.name)}</b>`,
     `분류: ${categoryLabel(skill.category)}`,
     "",
-    skill.description,
+    escapeHtml(skill.description),
   ];
 
   if (skill.longDescription) {
-    lines.push("", skill.longDescription);
+    lines.push("", escapeHtml(skill.longDescription));
   }
 
   if (skill.examples.length > 0) {
     lines.push("", "<b>이렇게 써봐:</b>");
     for (const ex of skill.examples) {
-      lines.push(`  • ${ex}`);
+      lines.push(`  • ${escapeHtml(ex)}`);
     }
   }
 
