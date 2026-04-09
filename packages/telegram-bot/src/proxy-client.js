@@ -19,7 +19,12 @@ async function proxyGet(path, params = {}) {
 
   if (!response.ok) {
     const text = await response.text().catch(() => "");
-    throw new Error(`Proxy ${response.status}: ${text.slice(0, 200)}`);
+    // Cloudflare challenge 또는 HTML 응답은 사용자에게 보여주지 않음
+    const isHtml = text.trimStart().startsWith("<");
+    const detail = isHtml
+      ? "프록시 서버에 연결할 수 없어 (Cloudflare 차단 가능성)"
+      : text.slice(0, 100);
+    throw new Error(`프록시 ${response.status}: ${detail}`);
   }
 
   return response.json();
