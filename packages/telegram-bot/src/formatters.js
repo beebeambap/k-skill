@@ -27,7 +27,7 @@ export function categoryLabel(category) {
 }
 
 export function formatSkillList(groups) {
-  const lines = ["<b>📋 k-skill 스킬 목록</b>\n"];
+  const lines = ["<b>📋 내가 할 수 있는 것들!</b>\n"];
 
   for (const [category, skills] of [...groups.entries()].sort()) {
     lines.push(`<b>[${categoryLabel(category)}]</b>`);
@@ -37,7 +37,7 @@ export function formatSkillList(groups) {
     lines.push("");
   }
 
-  lines.push("상세: /skill_<이름> 으로 조회하세요.");
+  lines.push("궁금한 거 있으면 /skill_<이름> 으로 자세히 볼 수 있어!");
   return lines.join("\n");
 }
 
@@ -54,7 +54,7 @@ export function formatSkillDetail(skill) {
   }
 
   if (skill.examples.length > 0) {
-    lines.push("", "<b>사용 예시:</b>");
+    lines.push("", "<b>이렇게 써봐:</b>");
     for (const ex of skill.examples) {
       lines.push(`  • ${ex}`);
     }
@@ -77,7 +77,7 @@ export function formatFineDust(data) {
 }
 
 export function formatWeather(data) {
-  if (!data || !data.items) return "날씨 데이터를 가져올 수 없습니다.";
+  if (!data || !data.items) return "날씨 데이터를 못 가져왔어 😢";
 
   const items = data.items;
   const byCategory = new Map();
@@ -107,7 +107,7 @@ export function formatWeather(data) {
 
 export function formatSubway(data) {
   if (!data?.realtimeArrivalList?.length) {
-    return "도착 정보가 없습니다.";
+    return "지금은 도착 정보가 없어!";
   }
 
   const arrivals = data.realtimeArrivalList.slice(0, 8);
@@ -124,7 +124,7 @@ export function formatSubway(data) {
 }
 
 export function formatStockSearch(data) {
-  if (!data?.results?.length) return "검색 결과가 없습니다.";
+  if (!data?.results?.length) return "검색 결과가 없어 🤔";
 
   const lines = ["<b>📈 주식 검색 결과</b>\n"];
   for (const stock of data.results.slice(0, 10)) {
@@ -134,7 +134,7 @@ export function formatStockSearch(data) {
 }
 
 export function formatHanRiver(data) {
-  if (!data?.items?.length) return "한강 수위 데이터를 가져올 수 없습니다.";
+  if (!data?.items?.length) return "한강 수위 데이터를 못 가져왔어 😢";
 
   const lines = ["<b>🌊 한강 수위 현황</b>\n"];
   for (const item of data.items) {
@@ -144,7 +144,7 @@ export function formatHanRiver(data) {
 }
 
 export function formatGitHubIssues(issues) {
-  if (!issues?.length) return "열린 이슈가 없습니다.";
+  if (!issues?.length) return "열린 이슈 없어! 깔끔 ✨";
 
   const lines = ["<b>📝 최근 이슈</b>\n"];
   for (const issue of issues) {
@@ -155,7 +155,7 @@ export function formatGitHubIssues(issues) {
 }
 
 export function formatGitHubPRs(prs) {
-  if (!prs?.length) return "열린 PR이 없습니다.";
+  if (!prs?.length) return "열린 PR 없어! 깔끔 ✨";
 
   const lines = ["<b>🔀 최근 Pull Requests</b>\n"];
   for (const pr of prs) {

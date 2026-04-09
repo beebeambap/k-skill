@@ -39,7 +39,7 @@ function safeHandler(fn) {
       await fn(ctx);
     } catch (error) {
       console.error("Handler error:", error);
-      await ctx.reply(`오류가 발생했습니다: ${error.message}`).catch(() => {});
+      await ctx.reply(`앗, 뭔가 잘못됐어 😵 ${error.message}`).catch(() => {});
     }
   };
 }
@@ -51,12 +51,12 @@ bot.start(
     await reply(
       ctx,
       [
-        "<b>👋 안녕하세요! k-skill 비서 봇입니다.</b>",
+        "<b>👋 반가워! 나는 k-skill 도우미야.</b>",
         "",
-        "한국 생활에 유용한 다양한 정보를 제공합니다.",
+        "날씨, 미세먼지, 지하철, 주식 같은 한국 생활 정보를 바로 찾아줄 수 있어!",
         "",
-        "<b>📌 주요 명령어</b>",
-        "/skills - 전체 스킬 목록",
+        "<b>📌 이런 거 물어봐</b>",
+        "/skills - 내가 할 수 있는 것들",
         "/search &lt;키워드&gt; - 스킬 검색",
         "/dust &lt;지역&gt; - 미세먼지 조회",
         "/weather &lt;위도&gt; &lt;경도&gt; - 날씨 예보",
@@ -66,8 +66,8 @@ bot.start(
         "/issues - GitHub 이슈",
         "/prs - GitHub PR",
         "",
-        "또는 자연어로 물어보세요!",
-        '예: "강남역 미세먼지 어때?" "삼성전자 주가"',
+        '그냥 편하게 말해도 돼!',
+        '"강남구 미세먼지 어때?" "삼성전자 주가" 이런 식으로 ~',
       ].join("\n"),
     );
   }),
@@ -86,12 +86,12 @@ bot.command(
   safeHandler(async (ctx) => {
     const query = ctx.message.text.replace(/^\/search\s*/, "").trim();
     if (!query) {
-      return reply(ctx, "사용법: /search <키워드>\n예: /search 날씨");
+      return reply(ctx, "뭘 찾아줄까? 키워드를 같이 보내줘!\n예: /search 날씨");
     }
 
     const results = searchSkills(skills, query);
     if (results.length === 0) {
-      return reply(ctx, `"${query}" 관련 스킬을 찾을 수 없습니다.`);
+      return reply(ctx, `음.. "${query}" 관련된 건 아직 없어 😅`);
     }
 
     const lines = [`<b>🔍 "${query}" 검색 결과 (${results.length}건)</b>\n`];
@@ -110,7 +110,7 @@ bot.command(
   safeHandler(async (ctx) => {
     const region = ctx.message.text.replace(/^\/dust\s*/, "").trim();
     if (!region) {
-      return reply(ctx, "사용법: /dust <지역명>\n예: /dust 강남구");
+      return reply(ctx, "어디 미세먼지 볼까? 지역명 같이 보내줘!\n예: /dust 강남구");
     }
 
     await ctx.sendChatAction("typing");
@@ -124,7 +124,7 @@ bot.command(
   safeHandler(async (ctx) => {
     const args = ctx.message.text.replace(/^\/weather\s*/, "").trim().split(/\s+/);
     if (args.length < 2) {
-      return reply(ctx, "사용법: /weather <위도> <경도>\n예: /weather 37.5665 126.9780");
+      return reply(ctx, "좌표를 알려줘! 위도 경도 순서로 ~\n예: /weather 37.5665 126.9780");
     }
 
     await ctx.sendChatAction("typing");
@@ -138,7 +138,7 @@ bot.command(
   safeHandler(async (ctx) => {
     const station = ctx.message.text.replace(/^\/subway\s*/, "").trim();
     if (!station) {
-      return reply(ctx, "사용법: /subway <역명>\n예: /subway 강남");
+      return reply(ctx, "어느 역? 역이름 같이 보내줘!\n예: /subway 강남");
     }
 
     await ctx.sendChatAction("typing");
@@ -152,7 +152,7 @@ bot.command(
   safeHandler(async (ctx) => {
     const query = ctx.message.text.replace(/^\/stock\s*/, "").trim();
     if (!query) {
-      return reply(ctx, "사용법: /stock <종목명>\n예: /stock 삼성전자");
+      return reply(ctx, "어떤 종목 볼까? 이름 같이 보내줘!\n예: /stock 삼성전자");
     }
 
     await ctx.sendChatAction("typing");
@@ -201,7 +201,7 @@ bot.use(
     const cmd = match[1];
     const skill = skillsByCmd.get(cmd);
     if (!skill) {
-      return reply(ctx, `"${cmd}" 스킬을 찾을 수 없습니다.\n/skills 로 목록을 확인하세요.`);
+      return reply(ctx, `"${cmd}"은 모르겠어 🤔\n/skills 로 목록 한번 볼래?`);
     }
     await reply(ctx, fmt.formatSkillDetail(skill));
   }),
@@ -223,7 +223,7 @@ async function nlFineDust(ctx, text) {
     .replace(/미세먼지|공기질|대기|어때|알려줘|좀|지금|현재|수치|확인/g, "")
     .trim();
   if (!region) {
-    return reply(ctx, '지역을 알려주세요.\n예: "강남구 미세먼지"');
+    return reply(ctx, '어디? 지역 이름을 말해줘!\n예: "강남구 미세먼지"');
   }
   await ctx.sendChatAction("typing");
   const data = await proxy.getFineDust(region);
@@ -233,7 +233,7 @@ async function nlFineDust(ctx, text) {
 async function nlWeather(ctx, text) {
   return reply(
     ctx,
-    "날씨 조회는 좌표가 필요합니다.\n/weather <위도> <경도>\n예: /weather 37.5665 126.9780",
+    "날씨는 좌표가 필요해!\n/weather <위도> <경도>\n예: /weather 37.5665 126.9780",
   );
 }
 
@@ -242,7 +242,7 @@ async function nlSubway(ctx, text) {
     .replace(/지하철|도착|몇\s*분|뒤에?|오나|와|역|실시간|정보|알려줘|보여줘/g, "")
     .trim();
   if (!station) {
-    return reply(ctx, '역명을 알려주세요.\n예: "강남역 도착 정보"');
+    return reply(ctx, '어느 역인지 말해줘!\n예: "강남역 도착 정보"');
   }
   await ctx.sendChatAction("typing");
   const data = await proxy.getSubwayArrival(station);
@@ -254,7 +254,7 @@ async function nlStock(ctx, text) {
     .replace(/주식|주가|종목|코스피|코스닥|검색|찾아줘|알려줘|얼마/g, "")
     .trim();
   if (!query) {
-    return reply(ctx, '종목명을 알려주세요.\n예: "삼성전자 주가"');
+    return reply(ctx, '어떤 종목? 이름을 말해줘!\n예: "삼성전자 주가"');
   }
   await ctx.sendChatAction("typing");
   const data = await proxy.searchStocks(query);
@@ -288,12 +288,12 @@ bot.on("text",
     await reply(
       ctx,
       [
-        '무엇을 도와드릴까요? 아래 예시를 참고하세요.',
+        '뭐가 궁금해? 이런 거 물어볼 수 있어!',
         '',
         '• "강남구 미세먼지" - 미세먼지 조회',
         '• "삼성전자 주가" - 주식 검색',
         '• "강남역 지하철" - 도착 정보',
-        '• /skills - 전체 스킬 목록',
+        '• /skills - 내가 할 수 있는 것들',
         '• /help - 도움말',
       ].join("\n"),
     );

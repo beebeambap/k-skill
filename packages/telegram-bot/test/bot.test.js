@@ -87,13 +87,13 @@ describe("formatters", () => {
   });
 
   it("formatSubway handles empty data", () => {
-    assert.match(fmt.formatSubway(null), /없습니다/);
-    assert.match(fmt.formatSubway({ realtimeArrivalList: [] }), /없습니다/);
+    assert.match(fmt.formatSubway(null), /없어/);
+    assert.match(fmt.formatSubway({ realtimeArrivalList: [] }), /없어/);
   });
 
   it("formatStockSearch handles empty results", () => {
-    assert.match(fmt.formatStockSearch({ results: [] }), /없습니다/);
-    assert.match(fmt.formatStockSearch(null), /없습니다/);
+    assert.match(fmt.formatStockSearch({ results: [] }), /없어/);
+    assert.match(fmt.formatStockSearch(null), /없어/);
   });
 
   it("formatGitHubIssues handles data", () => {
@@ -117,7 +117,7 @@ describe("formatters", () => {
     const skills = await loadSkills();
     const groups = groupByCategory(skills);
     const result = fmt.formatSkillList(groups);
-    assert.match(result, /스킬 목록/);
+    assert.match(result, /할 수 있는/);
     assert.ok(result.length > 100, "should have substantial content");
   });
 
@@ -128,6 +128,6 @@ describe("formatters", () => {
 
     const result = fmt.formatSkillDetail(weather);
     assert.match(result, /korea-weather/);
-    assert.match(result, /사용 예시/);
+    assert.match(result, /이렇게 써봐/);
   });
 });
