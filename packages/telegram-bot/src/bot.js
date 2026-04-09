@@ -1,3 +1,4 @@
+import { createServer } from "node:http";
 import { Telegraf } from "telegraf";
 import { loadSkills, searchSkills, groupByCategory } from "./skills.js";
 import * as proxy from "./proxy-client.js";
@@ -314,6 +315,16 @@ async function main() {
 
   bot.launch();
   console.log("🤖 k-skill 텔레그램 봇 시작됨");
+
+  // Render 등 클라우드 플랫폼용 건강체크 HTTP 서버
+  const port = process.env.PORT;
+  if (port) {
+    const server = createServer((req, res) => {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ status: "ok", skills: skills.size }));
+    });
+    server.listen(port, () => console.log(`Health check on :${port}`));
+  }
 
   process.once("SIGINT", () => bot.stop("SIGINT"));
   process.once("SIGTERM", () => bot.stop("SIGTERM"));
