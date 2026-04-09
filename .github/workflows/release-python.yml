@@ -16,26 +16,30 @@ permissions:
   id-token: write
 
 jobs:
-  scaffold-only:
-    if: ${{ hashFiles('python-packages/**/pyproject.toml') == '' }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "No Python package exists yet. release-please remains scaffold-only."
-
   release:
-    if: ${{ hashFiles('python-packages/**/pyproject.toml') != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check for Python packages
+        id: check
+        run: |
+          if find python-packages -name 'pyproject.toml' 2>/dev/null | grep -q .; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "No Python package exists yet. release-please remains scaffold-only."
+          fi
+
       - id: release
+        if: steps.check.outputs.exists == 'true'
         uses: googleapis/release-please-action@v4
         with:
           config-file: .github/release-please/python-config.json
           manifest-file: .github/release-please/python-manifest.json
 
       - name: Reminder
-        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        if: steps.release.outputs.releases_created == 'true'
         run: |
           echo "Python package release metadata was created."
           echo "Wire package-specific build/publish steps here when the first python package is added."
