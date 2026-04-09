@@ -27,7 +27,7 @@ export function categoryLabel(category) {
 }
 
 export function formatSkillList(groups) {
-  const lines = ["<b>📋 내가 할 수 있는 것들!</b>\n"];
+  const lines = ["<b>🐝 내가 할 수 있는 것들!</b>\n"];
 
   for (const [category, skills] of [...groups.entries()].sort()) {
     lines.push(`<b>[${categoryLabel(category)}]</b>`);
@@ -77,7 +77,7 @@ export function formatFineDust(data) {
 }
 
 export function formatWeather(data) {
-  if (!data || !data.items) return "날씨 데이터를 못 가져왔어 😢";
+  if (!data || !data.items) return "날씨 데이터를 못 가져왔어 🐝💦";
 
   const items = data.items;
   const byCategory = new Map();
@@ -124,7 +124,7 @@ export function formatSubway(data) {
 }
 
 export function formatStockSearch(data) {
-  if (!data?.results?.length) return "검색 결과가 없어 🤔";
+  if (!data?.results?.length) return "검색 결과가 없어 🐝";
 
   const lines = ["<b>📈 주식 검색 결과</b>\n"];
   for (const stock of data.results.slice(0, 10)) {
@@ -134,7 +134,7 @@ export function formatStockSearch(data) {
 }
 
 export function formatHanRiver(data) {
-  if (!data?.items?.length) return "한강 수위 데이터를 못 가져왔어 😢";
+  if (!data?.items?.length) return "한강 수위 데이터를 못 가져왔어 🐝💦";
 
   const lines = ["<b>🌊 한강 수위 현황</b>\n"];
   for (const item of data.items) {
@@ -144,7 +144,7 @@ export function formatHanRiver(data) {
 }
 
 export function formatGitHubIssues(issues) {
-  if (!issues?.length) return "열린 이슈 없어! 깔끔 ✨";
+  if (!issues?.length) return "열린 이슈 없어! 깔끔 🍯";
 
   const lines = ["<b>📝 최근 이슈</b>\n"];
   for (const issue of issues) {
@@ -155,7 +155,7 @@ export function formatGitHubIssues(issues) {
 }
 
 export function formatGitHubPRs(prs) {
-  if (!prs?.length) return "열린 PR 없어! 깔끔 ✨";
+  if (!prs?.length) return "열린 PR 없어! 깔끔 🍯";
 
   const lines = ["<b>🔀 최근 Pull Requests</b>\n"];
   for (const pr of prs) {

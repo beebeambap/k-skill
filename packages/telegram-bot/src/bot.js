@@ -39,7 +39,7 @@ function safeHandler(fn) {
       await fn(ctx);
     } catch (error) {
       console.error("Handler error:", error);
-      await ctx.reply(`앗, 뭔가 잘못됐어 😵 ${error.message}`).catch(() => {});
+      await ctx.reply(`앗, 뭔가 잘못됐어 🐝💦 ${error.message}`).catch(() => {});
     }
   };
 }
@@ -51,9 +51,9 @@ bot.start(
     await reply(
       ctx,
       [
-        "<b>👋 반가워! 나는 k-skill 도우미야.</b>",
+        "<b>🐝 안녕! 나는 비(Bee)야~</b>",
         "",
-        "날씨, 미세먼지, 지하철, 주식 같은 한국 생활 정보를 바로 찾아줄 수 있어!",
+        "날씨, 미세먼지, 지하철, 주식 같은 한국 생활 정보를 윙윙 찾아다 줄게!",
         "",
         "<b>📌 이런 거 물어봐</b>",
         "/skills - 내가 할 수 있는 것들",
@@ -66,8 +66,8 @@ bot.start(
         "/issues - GitHub 이슈",
         "/prs - GitHub PR",
         "",
-        '그냥 편하게 말해도 돼!',
-        '"강남구 미세먼지 어때?" "삼성전자 주가" 이런 식으로 ~',
+        '그냥 편하게 말해도 돼! 🍯',
+        '"강남구 미세먼지 어때?" "삼성전자 주가" 이런 식으로~',
       ].join("\n"),
     );
   }),
@@ -91,7 +91,7 @@ bot.command(
 
     const results = searchSkills(skills, query);
     if (results.length === 0) {
-      return reply(ctx, `음.. "${query}" 관련된 건 아직 없어 😅`);
+      return reply(ctx, `음.. "${query}" 관련된 건 아직 없어 🐝`);
     }
 
     const lines = [`<b>🔍 "${query}" 검색 결과 (${results.length}건)</b>\n`];
@@ -201,7 +201,7 @@ bot.use(
     const cmd = match[1];
     const skill = skillsByCmd.get(cmd);
     if (!skill) {
-      return reply(ctx, `"${cmd}"은 모르겠어 🤔\n/skills 로 목록 한번 볼래?`);
+      return reply(ctx, `"${cmd}"은 모르겠어 🐝\n/skills 로 목록 한번 볼래?`);
     }
     await reply(ctx, fmt.formatSkillDetail(skill));
   }),
@@ -288,7 +288,7 @@ bot.on("text",
     await reply(
       ctx,
       [
-        '뭐가 궁금해? 이런 거 물어볼 수 있어!',
+        '뭐가 궁금해? 이런 거 물어볼 수 있어! 🐝',
         '',
         '• "강남구 미세먼지" - 미세먼지 조회',
         '• "삼성전자 주가" - 주식 검색',
