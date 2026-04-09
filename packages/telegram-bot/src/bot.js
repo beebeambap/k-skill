@@ -34,9 +34,9 @@ function reply(ctx, text) {
 }
 
 function safeHandler(fn) {
-  return async (ctx) => {
+  return async (ctx, next) => {
     try {
-      await fn(ctx);
+      await fn(ctx, next);
     } catch (error) {
       console.error("Handler error:", error);
       await ctx.reply(`앗, 뭔가 잘못됐어 🐝💦 ${error.message}`).catch(() => {});
